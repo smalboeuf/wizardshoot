@@ -39,15 +39,16 @@ public class GameManager : MonoBehaviour
         leftSpawnPointsClone.AddRange(LeftSpawnPositions);
         rightSpawnPointsClone.AddRange(RightSpawnPositions);
         
-        // Get a random range of amount of enemies to spawn
-        int amountOfEnemiesToSpawn = Random.Range(1, _enemiesToSpawn + 1);
-
         // Get a randomized enemy
         GameObject randomEnemy = Enemies[Random.Range(0, Enemies.Count - 1)];
-
+        // Get a random range of amount of enemies to spawn
+        int amountOfEnemiesToSpawn = Random.Range(1, _enemiesToSpawn + 1);
         InstantiateEnemies(amountOfEnemiesToSpawn, topSpawnPointsClone, randomEnemy);
+        amountOfEnemiesToSpawn = Random.Range(1, _enemiesToSpawn + 1);
         InstantiateEnemies(amountOfEnemiesToSpawn, bottomSpawnPointsClone, randomEnemy);
+        amountOfEnemiesToSpawn = Random.Range(1, _enemiesToSpawn + 1);
         InstantiateEnemies(amountOfEnemiesToSpawn, leftSpawnPointsClone, randomEnemy);
+        amountOfEnemiesToSpawn = Random.Range(1, _enemiesToSpawn + 1);
         InstantiateEnemies(amountOfEnemiesToSpawn, rightSpawnPointsClone, randomEnemy);
     }
 

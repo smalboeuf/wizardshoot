@@ -6,7 +6,12 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float _speed = 10;
     private Rigidbody2D _rb2d;
-    private ProjectileShooter _projectileShooter;
+
+    public ProjectileShooter ProjectileShooter;
+
+    public Pickup CurrentPickup;
+    public float CurrentPickupTimer = 0;
+    public bool PickupActive = false;
 
     // Inputs
     private Vector3 _moveInputs;
@@ -16,7 +21,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         _rb2d = GetComponent<Rigidbody2D>();
-        _projectileShooter = GetComponent<ProjectileShooter>();
+        ProjectileShooter = GetComponent<ProjectileShooter>();
     }
 
     void Update()
@@ -24,6 +29,56 @@ public class PlayerController : MonoBehaviour
         HandleMoveInputs();
         HandleShootInputs();
         UpdateAnimationAndMove();
+        TrackPickupTimer();
+    }
+
+    public void Die() {
+        print("Player died");
+        // Play death animation
+
+        // Save the current round score to the leaderboards to track highest rounds
+
+        // Reset Game state
+        // - Remove existing enemies
+        // - Remove player and position him back at the center of the game
+        // - Reset the round counter
+    }
+
+    private void UpdateAnimationAndMove() {
+    }
+
+    private void MoveCharacter() {
+        _rb2d.MovePosition(transform.position + _moveInputs.normalized * _speed * Time.deltaTime);
+    }
+
+    private void Shooting() {
+        // When holding down arrows, shoot in that direction
+
+        if (_shootInputs != Vector3.zero)
+        {
+            ProjectileShooter.Shoot(_shootInputs);
+        }
+    }
+
+    private void RefreshPlayerStatsAndBuffs()
+    {
+        print("Refresh Player stats");
+        CurrentPickup = null;
+        PickupActive = false;
+        ProjectileShooter.ResetProjectileShooterStats();
+    }
+
+    private void TrackPickupTimer()
+    {
+        if (CurrentPickupTimer > 0)
+        {
+            CurrentPickupTimer -= Time.deltaTime;
+        }
+
+        if (CurrentPickupTimer <= 0 && PickupActive == true)
+        {
+            RefreshPlayerStatsAndBuffs();
+        }
     }
 
     private void HandleMoveInputs()
@@ -81,26 +136,4 @@ public class PlayerController : MonoBehaviour
         MoveCharacter();
         Shooting();
     }
-
-    public void Die() { 
-    
-    }
-
-    private void UpdateAnimationAndMove() {
-    }
-
-    private void MoveCharacter() {
-        _rb2d.MovePosition(transform.position + _moveInputs.normalized * _speed * Time.deltaTime);
-    }
-
-    private void Shooting() {
-        // When holding down arrows, shoot in that direction
-
-        if (_shootInputs != Vector3.zero)
-        {
-            _projectileShooter.Shoot(_shootInputs);
-        }
-    }
-
-    
 }

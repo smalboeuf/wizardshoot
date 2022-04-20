@@ -29,12 +29,12 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.transform.tag == "Player")
         {
             print("Player died");
-            collision.GetComponent<PlayerController>().Die();
+            collision.transform.GetComponent<PlayerController>().Die();
         }
     }
 }
