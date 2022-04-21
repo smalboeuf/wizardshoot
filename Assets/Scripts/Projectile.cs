@@ -21,7 +21,7 @@ public class Projectile : MonoBehaviour
 
     private void Update()
     {
-        transform.position += _shootingDirection * _speed * Time.deltaTime;
+        transform.position += _shootingDirection.normalized * _speed * Time.deltaTime;
     }
 
     private IEnumerator DestroyAfterTime() {

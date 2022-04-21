@@ -28,23 +28,7 @@ public class PlayerController : MonoBehaviour
     {
         HandleMoveInputs();
         HandleShootInputs();
-        UpdateAnimationAndMove();
         TrackPickupTimer();
-    }
-
-    public void Die() {
-        print("Player died");
-        // Play death animation
-
-        // Save the current round score to the leaderboards to track highest rounds
-
-        // Reset Game state
-        // - Remove existing enemies
-        // - Remove player and position him back at the center of the game
-        // - Reset the round counter
-    }
-
-    private void UpdateAnimationAndMove() {
     }
 
     private void MoveCharacter() {
@@ -53,7 +37,6 @@ public class PlayerController : MonoBehaviour
 
     private void Shooting() {
         // When holding down arrows, shoot in that direction
-
         if (_shootInputs != Vector3.zero)
         {
             ProjectileShooter.Shoot(_shootInputs);
@@ -79,6 +62,19 @@ public class PlayerController : MonoBehaviour
         {
             RefreshPlayerStatsAndBuffs();
         }
+    }
+
+    public void Die()
+    {
+        print("Player died");
+        // Play death animation
+
+        // Save the current round score to the leaderboards to track highest rounds
+
+        // Reset Game state
+        // - Remove existing enemies
+        // - Remove player and position him back at the center of the game
+        // - Reset the round counter
     }
 
     private void HandleMoveInputs()

@@ -1,20 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ProjectileShooter : MonoBehaviour
 {
-    [SerializeField] PlayerController playerController;
-    public Transform _firePoint;
-    public GameObject _projectilePrefab;
-    [SerializeField] private float _projectileSpeed;
-
-    [SerializeField] float _baseTimeBetweenProjectiles = 0.25f;
+    public Transform FirePoint;
+    public GameObject ProjectilePrefab;
+    public float ProjectileSpeed;
     public float TimeBetweenProjectiles;
+
+    [SerializeField] private float _baseTimeBetweenProjectiles = 0.25f;
     private float _projectileShootCounter;
+
+    public delegate void ShootActionDelegate(Vector2 direction, float speed, GameObject projectilePrefab, Transform defaultFirePoint);
+    private ShootActionDelegate ShootAction = delegate { };
 
     private void Start()
     {
+        ShootAction = DefaultShoot;
         TimeBetweenProjectiles = _baseTimeBetweenProjectiles;
     }
 
@@ -35,24 +36,26 @@ public class ProjectileShooter : MonoBehaviour
     {
         if (_projectileShootCounter <= 0)
         {
-            if (HasShootEffect())
-            {
-                // Do shoot effect
-            } else
-            {
-                GameObject projectileGameObject = Instantiate(_projectilePrefab, _firePoint.position, _firePoint.rotation);
-                Projectile projectile = projectileGameObject.GetComponent<Projectile>();
-                projectile.SetProjectile(direction, _projectileSpeed);
+            ShootAction(direction, ProjectileSpeed, ProjectilePrefab, FirePoint);
 
-                // Reset counter for shooting
-                _projectileShootCounter = TimeBetweenProjectiles;
-            }
-            
+            // Reset counter for shooting
+            _projectileShootCounter = TimeBetweenProjectiles;
         }
     }
-    private bool HasShootEffect()
+
+    public void DefaultShoot(Vector2 direction, float speed, GameObject projectilePrefab, Transform defaultFirePoint)
     {
-        return playerController.CurrentPickupTimer > 0 && playerController.CurrentPickup != null && playerController.CurrentPickup.HasEffect;
+        GameObject projectileGameObject = Instantiate(ProjectilePrefab, FirePoint.position, FirePoint.rotation);
+        Projectile projectile = projectileGameObject.GetComponent<Projectile>();
+        projectile.SetProjectile(direction, speed);
+
+        // Reset counter for shooting
+        _projectileShootCounter = TimeBetweenProjectiles;
+    }
+
+    public void SetShootAction(ShootActionDelegate shootActionDelegate)
+    {
+        ShootAction = shootActionDelegate;
     }
 
     public void ResetProjectileShooterStats()
