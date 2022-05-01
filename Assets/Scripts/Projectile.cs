@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] private float _timeBeforeDestroyed = 10;
+    [SerializeField] private float _timeBeforeDestroyed = 5;
 
     private Vector3 _shootingDirection;
     private float _speed;
@@ -26,16 +26,20 @@ public class Projectile : MonoBehaviour
 
     private IEnumerator DestroyAfterTime() {
         yield return new WaitForSeconds(_timeBeforeDestroyed);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Enemy")
         {
-            print("Enemy hit");
-            Destroy(gameObject);
+            gameObject.SetActive(false);
             collision.GetComponent<Enemy>().Die();
+        }
+
+        if (collision.tag == "Projectile Bounds")
+        {
+            gameObject.SetActive(false);
         }
     }
 }

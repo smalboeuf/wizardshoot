@@ -6,6 +6,7 @@ public class IncreaseShootSpeedPickup : Pickup
    
     public override void PickupEffect(PlayerController playerController, float speed, GameObject projectilePrefab, Transform defaultFirePoint)
     {
+        playerController.ProjectileShooter.ResetProjectileShooterStats();
         playerController.ProjectileShooter.TimeBetweenProjectiles = _increasedTimeBetweenProjectiles;
     }
 }

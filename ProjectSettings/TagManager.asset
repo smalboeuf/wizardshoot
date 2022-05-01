@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
+  - Projectile Bounds
   layers:
   - Default
   - TransparentFX
@@ -47,6 +48,9 @@ TagManager:
     locked: 0
   - name: Colliders
     uniqueID: 2725076337
+    locked: 0
+  - name: Pickups
+    uniqueID: 3454010487
     locked: 0
   - name: Player
     uniqueID: 2030871397

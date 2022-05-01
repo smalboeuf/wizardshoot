@@ -26,7 +26,7 @@ public class WaveTimer : MonoBehaviour
 
     private void HandleSpawnWave()
     {
-        gameManager.StartWave();
+        gameManager.SpawnWaveEnemies();
         _timeCounter = gameManager.TimeBetweenRounds;
     }
 }
