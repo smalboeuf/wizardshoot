@@ -55,15 +55,27 @@ public class PlayerController : MonoBehaviour
         TrackPickupTimer();
         HandleInvincibilityTimer();
         InvincibilityFlashAnimation();
+        HandleAnimationStates();
+        HandlePauseInput();
+    }
 
+    private void HandlePauseInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            _gameManager.Pause();
+        }
+    }
 
+    private void HandleAnimationStates()
+    {
         _animator.SetBool("DownRun", (_moveInputs.y < 0 && _shootInputs == Vector3.zero) || _shootInputs.y < 0);
 
         _animator.SetBool("UpRun", (_moveInputs.y > 0 && _shootInputs == Vector3.zero) || _shootInputs.y > 0);
 
         _animator.SetBool("LeftRun", (_moveInputs.x < 0 && _shootInputs == Vector3.zero) || _shootInputs.x < 0);
-        
-        _animator.SetBool("RightRun", (_moveInputs.x > 0 && _shootInputs == Vector3.zero) || _shootInputs.x > 0);   
+
+        _animator.SetBool("RightRun", (_moveInputs.x > 0 && _shootInputs == Vector3.zero) || _shootInputs.x > 0);
     }
 
     private void MoveCharacter() {

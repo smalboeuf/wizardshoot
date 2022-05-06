@@ -19,11 +19,13 @@ public class Enemy : MonoBehaviour
     public SpawnArea SpawnArea;
 
     private GameManager _gameManager;
+    private Animator _animator;
 
     private void Start()
     {
         _player = GameObject.FindWithTag("Player");
         _gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
+        _animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -133,6 +135,10 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator MoveEnemy(Vector3 direction)
     {
+        _animator.SetBool("DownRun", direction.y < 0);
+
+        _animator.SetBool("UpRun", direction.y > 0);
+
         _isMoving = true;
         
         float elapsedTime = 0;
@@ -148,7 +154,6 @@ public class Enemy : MonoBehaviour
         }
 
         transform.position = _targetPosition;
-
         _isMoving = false;
     }
 

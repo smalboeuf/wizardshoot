@@ -4,16 +4,19 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private GameObject pausePanel;
-    [SerializeField] private GameObject gameOverPanel;
-    [SerializeField] private PlayerController player;
+    [SerializeField] private GameObject _pausePanel;
+    [SerializeField] private GameObject _gameOverPanel;
+    [SerializeField] private PlayerController _player;
+    [SerializeField] private RoundCounterUI _roundCounterUI;
 
     [SerializeField] private int _enemiesToBeKilledBeforeDrop = 10;
     public int EnemiesKilledSinceLastDrop = 0;
 
     public int CurrentRound = 0;
     public float TimeBetweenRounds = 4;
+    public float _startingTimeBetweenRounds;
     private int _enemiesToSpawn = 3;
+    private int _startingEnemiesToSpawn;
     [SerializeField] private bool _canSpawnEnemies = true;
 
     public List<GameObject> Enemies;
@@ -22,7 +25,13 @@ public class GameManager : MonoBehaviour
     public List<Transform> LeftSpawnPositions;
     public List<Transform> RightSpawnPositions;
     public List<Transform> BottomSpawnPositions;
-   
+
+    private void Start()
+    {
+        _startingTimeBetweenRounds = TimeBetweenRounds;
+        _startingEnemiesToSpawn = _enemiesToSpawn;
+    }
+
     public void GameOver()
     {
         _canSpawnEnemies = false;
@@ -32,20 +41,28 @@ public class GameManager : MonoBehaviour
             Destroy(enemies[i]);
         }
 
-        gameOverPanel.SetActive(true);
+        _gameOverPanel.SetActive(true);
     }
 
     public void Pause()
     {
-        pausePanel.SetActive(true);
+        _pausePanel.SetActive(true);
+        Time.timeScale = 0f;
     }
 
+    public void Resume()
+    {
+        _pausePanel.SetActive(false);
+        Time.timeScale = 1f;
+    }
+        
     public void PlayAgain()
     {
-        gameOverPanel.SetActive(false);
+        _gameOverPanel.SetActive(false);
         SpawnWaveEnemies();
         _canSpawnEnemies = true;
-        player.CanMove = true;
+        _player.CanMove = true;
+        CurrentRound = 0;
     }
 
     public void QuitGame()
@@ -79,6 +96,7 @@ public class GameManager : MonoBehaviour
             amountOfEnemiesToSpawn = Random.Range(1, _enemiesToSpawn + 1);
             InstantiateEnemies(amountOfEnemiesToSpawn, rightSpawnPointsClone, randomEnemy);
 
+            _roundCounterUI.SetRound(CurrentRound);
             CurrentRound++;
             RoundBasedChecks();
         }
