@@ -14,4 +14,4 @@ Wizard Shoot is a simple 2D Top down game where you try and survive as many roun
 - Game Engine: Unity
 - Pixel Art: Aseprite
 
-![GameplayImage](http://i.imgur.com/Nsydogg)
+![GameplayImage](./docs/WizardShootExample.PNG)
